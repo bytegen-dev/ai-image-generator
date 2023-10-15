@@ -111,7 +111,12 @@ const ImageGenerator = () => {
                     </form>
                 </div>
             </div>}
-            <div className={isLoading ? 'ai-image-generator loading' : 'ai-image-generator'}>
+            <div className={isLoading ? 'ai-image-generator loading' : 'ai-image-generator'} style={noKey ? {
+                pointerEvents: "none",
+                overflow: "hidden",
+            }: {
+                opacity: "1",
+            }}>
                 <div className='header'>
                     AI image <span>generator</span>
                 </div>
