@@ -98,7 +98,7 @@ const ImageGenerator = () => {
             {noKey && <div className='popup'>
                 <div className='container'>
                     <h1>
-                        Hello, Please add your Open AI token to Continue
+                        Hello, Please add your Open AI API Key to Continue
                     </h1>
                     <form onSubmit={addNewApiKey}>
                         <input placeholder='Your OpenAi api key' type='text' minLength={10} value={apiKeyValue} onChange={(e)=>{
