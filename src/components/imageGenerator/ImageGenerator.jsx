@@ -20,6 +20,7 @@ const ImageGenerator = () => {
         if(apiKeyLocalStorage){
             setApiKey(apiKeyLocalStorage)
             setNoKey(false)
+            setApiKeyValue(apiKeyLocalStorage)
         } else{
             if(apiKeyEnv){
                 setApiKey(apiKeyEnv)
