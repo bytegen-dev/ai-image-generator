@@ -1,15 +1,43 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import "./ImageGenerator.css"
 import defaultImage from "../assets/defaultImage.png"
 import { BiCommentError } from "react-icons/bi"
+import { FaKey } from "react-icons/fa"
 
 const ImageGenerator = () => {
-    const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
+    const apiKeyEnv = process.env.REACT_APP_OPENAI_API_KEY;
 
     const [imageUrl, setImageUrl] = useState("/");
     const [isLoading, setIsLoading] = useState(false)
     const [canGenerate, setCanGenerate] = useState(true)
     const [error, setError] = useState(null)
+    const [apiKey, setApiKey] = useState(false)
+    const [noKey, setNoKey] = useState(false)
+    const [apiKeyValue, setApiKeyValue] = useState("")
+
+    useEffect(()=>{
+        const apiKeyLocalStorage = localStorage.getItem("openAiKey");
+        if(apiKeyLocalStorage){
+            setApiKey(apiKeyLocalStorage)
+            setNoKey(false)
+        } else{
+            if(apiKeyEnv){
+                setApiKey(apiKeyEnv)
+                setNoKey(false)
+            } else{
+                setNoKey(true)
+            }
+        }
+    },[apiKeyEnv])
+
+    const addNewApiKey = (e)=>{
+        e.preventDefault()
+        if(apiKeyValue){
+            setApiKey(apiKeyValue)
+            localStorage.setItem("openAiKey", apiKeyValue)
+            setNoKey(false)
+        }
+    }
 
     const inputRef = useRef(null);
 
@@ -26,7 +54,6 @@ const ImageGenerator = () => {
         if(apiKey){
             setIsLoading(true);
             
-            try{
                 const response = await fetch('https://api.openai.com/v1/images/generations',{
                     method:"POST",
                     headers: {
@@ -41,8 +68,13 @@ const ImageGenerator = () => {
                     }),
                 });
                 let data = await response.json();
+                console.log(data)
                 let data_array = data.data
-                setImageUrl(data_array[0].url)
+                if(data.data?.length){
+                    setImageUrl(data_array[0].url)
+                } else{
+                    setError(data.error.message || "An Error Occured" )
+                }
                 setCanGenerate(false)
 
                 setTimeout(()=>{
@@ -50,55 +82,73 @@ const ImageGenerator = () => {
                 }, 2000)
                 setIsLoading(false)
 
-            } catch(error){
-                console.error(error)
-                setError(error.message)
-            }
-
         } else{
             setError("Please add your API key to continue")
         }
     }
 
     return (
-    <div className={isLoading ? 'ai-image-generator loading' : 'ai-image-generator'}>
-        <div className='header'>
-            AI image <span>generator</span>
-        </div>
-        <div className='img-loading'>
-            <div className='image'>
-                <img src={imageUrl === "/" ? defaultImage : imageUrl} width={200} alt='' />
-                <div className='backdrop'>
-                    <div className='spinner'></div>
-                    <p>
-                        Generating Image...
-                    </p>
+        <>
+            <button className='change-key' onClick={()=>{
+                setApiKey(null)
+                setNoKey(true)
+            }}>
+                <FaKey />
+            </button>
+            {noKey && <div className='popup'>
+                <div className='container'>
+                    <h1>
+                        Hello, Please add your Open AI token to Continue
+                    </h1>
+                    <form onSubmit={addNewApiKey}>
+                        <input placeholder='Your OpenAi api key' type='text' minLength={10} value={apiKeyValue} onChange={(e)=>{
+                            setApiKeyValue(e.target.value)
+                        }} />
+                        <button>
+                            Add Api Key
+                        </button>
+                    </form>
                 </div>
-                {error && <div className='backdrop x'>
-                    <div className='error'>
-                        <BiCommentError />
+            </div>}
+            <div className={isLoading ? 'ai-image-generator loading' : 'ai-image-generator'}>
+                <div className='header'>
+                    AI image <span>generator</span>
+                </div>
+                <div className='img-loading'>
+                    <div className='image'>
+                        <img src={imageUrl === "/" ? defaultImage : imageUrl} width={200} alt='' />
+                        <div className='backdrop'>
+                            <div className='spinner'></div>
+                            <p>
+                                Generating Image...
+                            </p>
+                        </div>
+                        {error && <div className='backdrop x'>
+                            <div className='error'>
+                                <BiCommentError />
+                            </div>
+                            <p>
+                                {error ? error : "Oops an Error Occured"}
+                            </p>
+                        </div>}
                     </div>
-                    <p>
-                        {error ? error : "Oops an Error Occured"}
-                    </p>
-                </div>}
+                </div>
+                <div className='search-box'>
+                    <input type='text' className='search-input' placeholder='Describe What You Want to See' ref={inputRef} />
+                    <div className='generate-btn' onClick={()=>{
+                    imageGenerator()
+                }} style={(isLoading || !canGenerate) ? {
+                    pointerEvents: "none"
+                }:{
+                    pointerEvents: "all"
+                }}>
+                        {canGenerate ? <>
+                            {isLoading ? "Please wait" : "Generate"}
+                        </> : <>{isLoading ? "Please wait" : "Refreshing..."}</>}
+                    </div>
+                </div>
             </div>
-        </div>
-        <div className='search-box'>
-            <input type='text' className='search-input' placeholder='Describe What You Want to See' ref={inputRef} />
-            <div className='generate-btn' onClick={()=>{
-            imageGenerator()
-        }} style={(isLoading || !canGenerate) ? {
-            pointerEvents: "none"
-        }:{
-            pointerEvents: "all"
-        }}>
-                {canGenerate ? <>
-                    {isLoading ? "Please wait" : "Generate"}
-                </> : <>{isLoading ? "Please wait" : "Refreshing..."}</>}
-            </div>
-        </div>
-    </div>
+        </>
   )
 }
 

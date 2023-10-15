@@ -6,6 +6,8 @@
     margin-top: 80px;
     margin-bottom: 20px;
     gap: 30px;
+    padding: 0 5vw;
+    text-align: center;
 }
 
 .header{
@@ -60,12 +62,108 @@
     display: none;
 }
 
+.popup{
+    position: fixed;
+    background-color: #000c;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transition: all 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup .container{
+    backdrop-filter: blur(10px);
+    width: 90%;
+    max-width: 700px;
+    text-align: center;
+    background-color: #fff2;
+    padding: 30px;
+    border-radius: 20px;
+    animation: come-in 1s ease forwards;
+}
+
+@keyframes come-in {
+    0%{
+        transform: translateY(100px);
+        opacity: 0;
+    }
+}
+
+.popup .container form{
+    display: flex;
+    width: 100%;
+    background-color: #111;
+    padding: 5px;
+    border-radius: 50px;
+    gap: 15px;
+}
+
+.popup .container form button{
+    color: #fff;
+    height: 50px;
+    font-size: 20px;
+    font-weight: 500;
+    background-color: #de1b89;
+    border-radius: 50px;
+    border: none;
+    min-width: 200px;
+    cursor: pointer;
+}
+
+.popup .container form input{
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    outline: none;
+    font-size: 20px;
+    padding-left: 20px;
+}
+
+.popup .container form input::placeholder{
+    color: #999;
+}
+
 .loading .backdrop{
     display: flex;
 }
 
+.change-key{
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    font-size: 30px;
+    color: #fff;
+    background-color: transparent;
+    width: 70px;
+    height: 70px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    z-index: 10;
+    border-radius: 1000px;
+}
+
+.change-key:hover, &:focus{
+    background-color: #fff2;
+}
+
 .backdrop.x{
     display: flex;
+}
+
+.backdrop p{
+    width: 90%;
+    max-width: 400px;
+    word-wrap: break-word;
 }
 
 .backdrop svg{
@@ -94,6 +192,7 @@
 .search-box{
     display: flex;
     width: 1000px;
+    max-width: 100%;
     height: 95px;
     justify-content: space-around;
     align-items: center;
