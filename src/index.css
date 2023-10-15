@@ -9,6 +9,12 @@ body {
   color: #fff;
   overflow-x: hidden;
 }
+
+::selection{
+  background-color: #de1b89;
+  color: #fff;
+}
+
 *{
   box-sizing: border-box;
 }
