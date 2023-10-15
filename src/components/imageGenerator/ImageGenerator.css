@@ -1,0 +1,130 @@
+.ai-image-generator{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+    margin-top: 80px;
+    margin-bottom: 20px;
+    gap: 30px;
+}
+
+.header{
+    font-size: 70px;
+    font-weight: 500;
+    padding-bottom: 30px;
+}
+
+.header span{
+    color: #de1b89;
+}
+
+.img-loading{
+    display: flex;
+    flex-direction: column;
+}
+
+.img-loading img{
+    width: 100%;
+    transition: all 0.5s ease;
+}
+
+.img-loading img:hover{
+    filter: grayscale(10);
+}
+
+.img-loading .image{
+    width: 512px;
+    max-width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.backdrop{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    background-color: #0009;
+    /* backdrop-filter: blur(2px); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    color: #fff;
+    flex-direction: column;
+    display: none;
+}
+
+.loading .backdrop{
+    display: flex;
+}
+
+.backdrop.x{
+    display: flex;
+}
+
+.backdrop svg{
+    font-size: 50px;
+}
+
+.loading .img-loading img{
+    filter: grayscale(10);
+}
+
+.spinner{
+    width: 50px;
+    height: 50px;
+    border: 5px solid #fff;
+    border-top: 5px solid #de1b89;
+    border-radius: 1000px;
+    animation: spin 0.5s linear forwards infinite;
+}
+
+@keyframes spin {
+    0%{
+        transform: rotate(-360deg);
+    }
+}
+
+.search-box{
+    display: flex;
+    width: 1000px;
+    height: 95px;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 50px;
+    background-color: #1f3540;
+}
+
+.search-input{
+    width: 600px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    color: white;
+    padding-left: 35px;
+    margin-right: 35px;
+}
+
+.search-input::placeholder{
+    color: #999;
+}
+
+.generate-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 85px;
+    font-size: 20px;
+    border-radius: 50px;
+    background-color: #de1b89;
+    cursor: pointer;
+}
