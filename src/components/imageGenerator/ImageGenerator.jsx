@@ -101,7 +101,7 @@ const ImageGenerator = () => {
                         Hello, Please add your Open AI API Key to Continue
                     </h1>
                     <form onSubmit={addNewApiKey}>
-                        <input placeholder='Your OpenAi api key' type='text' minLength={10} value={apiKeyValue} onChange={(e)=>{
+                        <input required placeholder='Your OpenAi api key' type='text' minLength={10} value={apiKeyValue} onChange={(e)=>{
                             setApiKeyValue(e.target.value)
                         }} />
                         <button>
